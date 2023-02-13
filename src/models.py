@@ -14,49 +14,35 @@ class User(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    activity_id = Column(Integer, ForeignKey('activity.id'))
     email = Column(String(80), nullable= False)
     log = Column(Boolean)
-    followers_id = Column(Integer, ForeignKey('followers.id'))
-    followings_id = Column(Integer, ForeignKey('followings.id'))
 
-class Activity(Base):
-    __tablename__ = 'activity'
+class Comments(Base):
+    __tablename__ = 'comments'
     id = Column(Integer, primary_key=True)
-    coments_id = Column(Integer, ForeignKey('coments.id'))
-    like_post_id = Column(Integer, ForeignKey('likepost.id'))
-    like_coments_id = Column(Integer, ForeignKey('likecoment.id'))
-    post_id = Column(Integer,ForeignKey('post.id'))
+    coment = Column(String(250))
+    user_coment_id = Column(Integer, ForeignKey('user.id'))
 
-class Followings(Base):
-    __tablename__ = 'followings'
+class Follow(Base):
+    __tablename__ = 'follow'
     id = Column(Integer, primary_key=True)
-    name = Column(String(80), nullable=False)
-
-class Followers(Base):
-    __tablename__ = 'followers'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(80), nullable=False)
+    id_user_follower = Column(Integer, ForeignKey('user.id'))
+    id_user_following = Column(Integer)
+    
 
 class LikePost(Base):
     __tablename__ = 'likepost'
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    id_user_like = Column(String(250), ForeignKey('user.id'))
     post_id = (Integer, ForeignKey('post.id'))
 
-class LikeComent(Base):
-    __tablename__ = 'likecoment'
-    id = Column(Integer, primary_key=True)
-    like_coment = Column(Boolean)
-    post_id = (Integer,ForeignKey('post.id'))
 
 class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     img = Column(String(250), nullable=False)
-    text = Column(Text)
     number_like_post = Column(Integer)
-    coments_id = Column(Integer, ForeignKey('coments.id'))
+    coments_id = Column(Integer, ForeignKey('comments.id'))
 
     def to_dict(self):
         return {}
